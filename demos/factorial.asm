@@ -7,14 +7,14 @@ start:
     push dx
     mov ax, 1
     mov cx, 5   ; n in n!
-petla:
+loop:
     mov bx, cx
     dec cx
-    jz endsilnia
-    jc endsilnia    ; if 0!
+    jz endfact
+    jc endfact  ; if 0!
     jmp mul
 endmul:
-    jmp petla
+    jmp loop
 
 ; ax, bx - parameters 
 ; ax - result
@@ -26,7 +26,7 @@ mulloop:
     dec bx
     jz endmul
     jmp mulloop
-endsilnia:
+endfact:
     pop dx
     pop cx
     pop bx

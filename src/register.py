@@ -1,3 +1,4 @@
+# class implementing 8-bit register
 class Register8:
     def __init__(self, name, content=0):
         self.MAX_VAL = 255
@@ -21,6 +22,7 @@ class Register8:
         return ov
 
 
+# class implementing 16-bit register that is made of 2 8-bit registers
 class Register16:
     def __init__(self, name, hiName, lowName, content=0):
         self.MAX_VAL = 32766

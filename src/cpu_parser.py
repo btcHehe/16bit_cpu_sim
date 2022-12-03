@@ -1,6 +1,7 @@
 import re
 
 
+# Class implementing assembly code parser
 class Parser:
     def __init__(self):
         self.registerList = ['AX', 'AH', 'AL', 'BX', 'BH', 'BL', 'CX', 'CH', 'CL', 'DX', 'DH', 'DL']

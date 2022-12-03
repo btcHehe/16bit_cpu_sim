@@ -2,15 +2,17 @@ from processor import Processor
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
-from parser import Parser
+from cpu_parser import Parser
+from constants import *
 import re
 
 
+# GUI of the simulator
 class App(tk.Tk):
     def __init__(self, w, h):
         super().__init__()
         self.geometry(str(w) + 'x' + str(h))
-        self.attributes('-type', 'dialog')
+        # self.attributes('-type', 'dialog')        # works on Linux but not on Windows
         self.title('16-bit processor simulator')
         self.editor = None
         self.lineNum = 0
@@ -44,20 +46,17 @@ class App(tk.Tk):
             self.StackGui.insert(tk.INSERT, str(elem)+'\n')
 
     def spawnWidgets(self):
-        buttFont = ('Arial', 8, 'bold')
-        labFont = ('Arial', 12, 'bold')
-        labValFont = ('Arial', 14, 'bold')
         self.editor = tk.Text(self, font=('Arial', 12, 'bold'), height=34, width=50)
         self.StackGui = tk.Text(self, font=('Arial', 14, 'bold'), height=8, width=15)
         self.updateStackGUI()
 
-        loadButton = tk.Button(self, font=buttFont, text='Load code', height=2, width=7,
+        loadButton = tk.Button(self, font=buttFont, text='Load code', height=BUTTON_H, width=BUTTON_W,
                                command=self.openFile)
-        saveButton = tk.Button(self, font=buttFont, text='Save to file', height=2, width=7, command=self.saveFile)
-        runButton = tk.Button(self, font=buttFont, text='Start', height=2, width=7, command=self.startProgram)
-        stepButton = tk.Button(self, font=buttFont, text='Step', height=2, width=7, command=self.step)
-        resetButton = tk.Button(self, font=buttFont, text='RESET', height=2, width=7, command=self.resetProgram)
-        findButton = tk.Button(self, font=buttFont, text='Find labels', height=2, width=7,
+        saveButton = tk.Button(self, font=buttFont, text='Save to file', height=BUTTON_H, width=BUTTON_W, command=self.saveFile)
+        runButton = tk.Button(self, font=buttFont, text='Start', height=BUTTON_H, width=BUTTON_W, command=self.startProgram)
+        stepButton = tk.Button(self, font=buttFont, text='Step', height=BUTTON_H, width=BUTTON_W, command=self.step)
+        resetButton = tk.Button(self, font=buttFont, text='RESET', height=BUTTON_H, width=BUTTON_W, command=self.resetProgram)
+        findButton = tk.Button(self, font=buttFont, text='Find labels', height=BUTTON_H, width=BUTTON_W,
                                command=lambda: self.parser.findLabels(self.editor.get(1.0, 'end-1c'), self.LabelDict))
 
         regLabel = tk.Label(self, font=('Arial', 18, 'bold'), text='Registers')
@@ -123,8 +122,13 @@ class App(tk.Tk):
                                            filetypes=(("Assembly files", "*.asm"), ("all files", "*.*")))
         try:
             with open(fname) as file:
+                self.editor.delete('1.0', 'end')      # clear editor
                 for line in file:
                     self.editor.insert(tk.INSERT, line)
+
+                self.LabelDict.clear()
+                self.parser.findLabels(self.editor.get(1.0, 'end-1c'), self.LabelDict)      # reset label dictionary
+                self.resetProgram()                                                         # reset cpu
         except:
             pass
 
@@ -172,7 +176,6 @@ class App(tk.Tk):
                 self.processor.IP += 1
                 self.lineNum += 1
                 self.update()
-                # print(self.AXval.get(), self.BXval.get(), self.CXval.get(), self.DXval.get())
                 self.processor.prt()
                 continue
             operands = self.parser.validate(line, self.LabelDict)
@@ -292,7 +295,6 @@ class App(tk.Tk):
             self.processor.IP += 1
             self.lineNum += 1
             self.update()
-            # print(self.AXval.get(), self.BXval.get(), self.CXval.get(), self.DXval.get())
             self.processor.prt()
             return
         operands = self.parser.validate(line, self.LabelDict)
@@ -392,12 +394,11 @@ class App(tk.Tk):
                     self.processor.sub(source, destination)
                 elif operands[0].upper() == 'XOR':
                     self.processor.sub(source, destination)
-            # else:
-            #     print(f'Error in line {self.lineNum}: {operands}')
+            else:
+                print(f'Error in line {self.lineNum}: {operands}')
         self.processor.IP += 1
         self.lineNum += 1
         self.update()
-        # print(self.AXval.get(), self.BXval.get(), self.CXval.get(), self.DXval.get())
         self.processor.prt()
 
     def resetProgram(self):
