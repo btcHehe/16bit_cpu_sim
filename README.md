@@ -18,7 +18,7 @@ All registers are 16-bit registers which are made of 8-bit registers. So every r
 
 ## Assembly
 ### Instruction set
-| Instruction       | Argument 1        | Argument 2            | Description           |
+| Instruction       | Arg 1        | Arg 2            | Description           |
 | -------------     |:----------------: | --------------------: | --------------------: |
 | ADD               | REG 1, NUMBER     |    REG 2              | Add argument 1 to argument 2. Save result in argument 2                 |
 | SUB               | REG 1, NUMBER     |    REG 2              | Subtract argument 1 from argument 2. Save result in argument 2 |
