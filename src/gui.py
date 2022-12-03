@@ -402,6 +402,8 @@ class App(tk.Tk):
         self.processor.prt()
 
     def resetProgram(self):
+        self.LabelDict.clear()
+        self.parser.findLabels(self.editor.get(1.0, 'end-1c'), self.LabelDict)      # reset label dictionary
         self.editor.tag_remove('highlight', float(self.lineNum), str(float(self.lineNum))+' lineend')
         self.editor.tag_remove('highlight', float(self.LineAmount), str(float(self.LineAmount))+' lineend')
         self.lineNum = 0
