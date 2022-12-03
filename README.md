@@ -54,3 +54,9 @@ When you add label manually in embedded code editor you need to reset your progr
 
 ## Simulator GUI
 ![Gui screenshot](img/gui.png)
+
+## Demos
+Directory 'demos' contains simple demonstration programs:
+- parser tester
+- Fibonacci numbers generator
+- factorial numbers calculation
