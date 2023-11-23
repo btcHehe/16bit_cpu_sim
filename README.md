@@ -1,6 +1,8 @@
 # Simulator of 16-bit CPU
 
 Gui simulator for imaginary 16-bit CPU. 
+![Gui screenshot](img/gui.png)
+
 
 ## Register list
 All registers are 16-bit registers which are made of 8-bit registers. So every register has it's low and high part (nibble) which are accessed by using L or H letter (AX = AH and AL).
@@ -51,9 +53,6 @@ There are no address sapce. Labels are names for line numbers and IP points just
 - Currently executed line is highlighted
 
 When you add label manually in embedded code editor you need to reset your program. When the program didn't started it's always good to click 'Find labels' button. After doing so you can be confident that parser acknowledged your changes and program will run properly.
-
-## Simulator GUI
-![Gui screenshot](img/gui.png)
 
 ## Demos
 Directory 'demos' contains simple demonstration programs:
